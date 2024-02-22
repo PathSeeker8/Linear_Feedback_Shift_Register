@@ -20,16 +20,7 @@ def lfsr(seed, taps):
 
 def seed_generator():
     try:
-        online_file = "https://www.mit.edu/~ecprice/wordlist.10000"
-        wordlist = urlopen(online_file)
-
-        wordlist_text = wordlist.read().decode('utf-8')  # On import, the text needs to be readable.
-        dictionary = wordlist_text.splitlines()
-
-        selected = random.choice(dictionary)
-        seed = sum(ord(char) for char in selected) & 0xffff  # Further assurance that our lfsr works within the bounds of 16-bits as the seed word needs to be numerical and cannot be just sent in (throws errors).
-        
-        print(f"Generated using this word: {selected}\n")
+        seed = int.from_bytes(os.urandom(2), 'big')  # Generates a 16-bit seed from system entropy
 
         return seed
     
